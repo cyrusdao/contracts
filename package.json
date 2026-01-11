@@ -1,0 +1,37 @@
+{
+  "name": "cyrus-token",
+  "version": "1.0.0",
+  "description": "CYRUS - The Father of Human Rights Token",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "coverage": "hardhat coverage",
+    "deploy:base-sepolia": "hardhat run scripts/deploy.js --network baseSepolia",
+    "deploy:base": "hardhat run scripts/deploy.js --network base",
+    "verify:baseSepolia": "hardhat verify --network baseSepolia",
+    "verify:base": "hardhat verify --network base",
+    "addliquidity:base": "hardhat run scripts/addLiquidity.js --network base",
+    "addliquidity:base-sepolia": "hardhat run scripts/addLiquidity.js --network baseSepolia",
+    "mint": "node scripts/auto-mint.js",
+    "mint:bg": "nohup node scripts/auto-mint.js > mint.log 2>&1 &"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyrus-cash/token.git"
+  },
+  "keywords": ["cyrus", "human-rights", "base", "omnichain", "bonding-curve"],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/cyrus-cash/token/issues"
+  },
+  "homepage": "https://github.com/cyrus-cash/token#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@openzeppelin/contracts": "^5.5.0",
+    "dotenv": "^17.2.3",
+    "hardhat": "^2.27.1"
+  }
+}
