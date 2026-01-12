@@ -64,6 +64,9 @@ contract Cyrus is ERC20, ERC20Bridgeable, ERC20Burnable, ERC20Pausable, Ownable,
     /// @notice Emitted when USDT is sent to LP
     event LPFunded(address indexed lpWallet, uint256 usdtAmount);
 
+    /// @notice Emitted when funds are withdrawn
+    event Withdrawn(address indexed to, uint256 amount);
+
     constructor(address initialOwner, address _usdt, address _lpWallet)
         ERC20("Cyrus", "CYRUS")
         Ownable(initialOwner)
@@ -247,6 +250,34 @@ contract Cyrus is ERC20, ERC20Bridgeable, ERC20Burnable, ERC20Pausable, Ownable,
 
         USDT.safeTransfer(lpWallet, amount);
         emit LPFunded(lpWallet, amount);
+    }
+
+    /// @notice Withdraw USDT to any address (flexible for LP, treasury, etc.)
+    /// @param to Destination address
+    /// @param amount Amount to withdraw (0 = all)
+    function withdraw(address to, uint256 amount) external onlyOwner {
+        require(to != address(0), "Invalid destination");
+        uint256 balance = USDT.balanceOf(address(this));
+        uint256 withdrawAmount = amount == 0 ? balance : amount;
+        require(withdrawAmount > 0 && withdrawAmount <= balance, "Invalid amount");
+
+        USDT.safeTransfer(to, withdrawAmount);
+        emit Withdrawn(to, withdrawAmount);
+    }
+
+    /// @notice Recover any ERC20 tokens accidentally sent to contract
+    /// @param token Token address to recover
+    /// @param to Destination address
+    /// @param amount Amount to recover (0 = all)
+    function recoverERC20(address token, address to, uint256 amount) external onlyOwner {
+        require(to != address(0), "Invalid destination");
+        IERC20 tokenContract = IERC20(token);
+        uint256 balance = tokenContract.balanceOf(address(this));
+        uint256 recoverAmount = amount == 0 ? balance : amount;
+        require(recoverAmount > 0 && recoverAmount <= balance, "Invalid amount");
+
+        tokenContract.safeTransfer(to, recoverAmount);
+        emit Withdrawn(to, recoverAmount);
     }
 
     /// @notice Update LP wallet address

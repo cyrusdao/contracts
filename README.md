@@ -157,11 +157,45 @@ function endSale() external onlyOwner
 function resumeSale() external onlyOwner
 ```
 
+## DAO Governance
+
+CYRUS includes a decentralized governance system (CyrusDAO) for community-driven decisions.
+
+### Governance Phases
+
+1. **Stewardship Phase** (Now → Nowruz 2026): Board members propose, all holders vote
+2. **Public Governance** (After Nowruz 2026): Any holder with 1M+ CYRUS can propose
+3. **Full Decentralization** (Optional): Guardian can abdicate for pure DAO control
+
+### Key Parameters
+
+| Parameter | Value |
+|-----------|-------|
+| Proposal Threshold | 1,000,000 CYRUS |
+| Quorum | 10,000,000 CYRUS |
+| Voting Period | 5 days |
+| Timelock Delay | 48 hours |
+
+### Deploy DAO
+
+```bash
+# Set environment variables
+export CYRUS_TOKEN_ADDRESS=0x...
+export GUARDIAN_ADDRESS=0x...  # Safe multisig
+export TREASURY_ADDRESS=0x...
+export BOARD_MEMBERS=0x...,0x...,0x...
+
+# Deploy
+npx hardhat run scripts/deployDAO.js --network base
+```
+
+See [GOVERNANCE.md](./GOVERNANCE.md) for full documentation.
+
 ## Links
 
 - Website: https://cyrus.cash
-- Twitter: @CyrusToken
-- GitHub: https://github.com/luxdao/cyrus
+- Twitter: @cyrus_cash
+- GitHub: https://github.com/cyrusdao
 
 ## Disclaimer
 
