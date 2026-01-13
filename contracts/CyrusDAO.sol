@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.31;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+// @luxfi/standard unified imports - DO NOT import @openzeppelin directly
+import {IERC20, IVotes} from "@luxfi/standard/tokens/ERC20.sol";
+import {ReentrancyGuard} from "@luxfi/standard/utils/Utils.sol";
 
 /// @title CyrusDAO
 /// @notice Governance contract for the CYRUS Persian diaspora community token
@@ -89,8 +90,8 @@ contract CyrusDAO is ReentrancyGuard {
     // STATE
     // ═══════════════════════════════════════════════════════════════════════
 
-    /// @notice CYRUS governance token
-    IERC20 public immutable token;
+    /// @notice CYRUS governance token (must implement ERC20Votes)
+    IVotes public immutable token;
 
     /// @notice Proposal count
     uint256 public proposalCount;
@@ -171,7 +172,7 @@ contract CyrusDAO is ReentrancyGuard {
         address _treasury,
         address[] memory _boardMembers
     ) {
-        token = IERC20(_token);
+        token = IVotes(_token);
         guardian = _guardian;
         treasury = _treasury;
 
@@ -211,7 +212,7 @@ contract CyrusDAO is ReentrancyGuard {
             if (!boardMembers[msg.sender]) revert NotBoardMember();
         } else {
             // After public governance, need token threshold
-            uint256 votes = _getVotes(msg.sender);
+            uint256 votes = _getCurrentVotes(msg.sender);
             if (votes < PROPOSAL_THRESHOLD) revert InsufficientVotes();
         }
 
@@ -465,7 +466,8 @@ contract CyrusDAO is ReentrancyGuard {
 
         if (receipt.hasVoted) revert AlreadyVoted();
 
-        uint256 votes = _getVotes(voter);
+        // Use snapshot at proposal creation (prevents flash loan attacks)
+        uint256 votes = _getVotes(voter, proposal.startBlock);
 
         receipt.hasVoted = true;
         receipt.support = support;
@@ -482,10 +484,20 @@ contract CyrusDAO is ReentrancyGuard {
         emit VoteCast(voter, proposalId, support, votes, reason);
     }
 
-    function _getVotes(address account) internal view returns (uint256) {
-        // Use current balance as voting power
-        // Note: In production, consider using checkpointed balances (ERC20Votes)
-        return token.balanceOf(account);
+    /// @notice Get voting power at a specific block (snapshot-based, flash loan resistant)
+    /// @param account Address to get voting power for
+    /// @param timepoint Block number to check voting power at
+    /// @return Voting power at the specified block
+    function _getVotes(address account, uint256 timepoint) internal view returns (uint256) {
+        // Use checkpointed balance at timepoint (prevents flash loan attacks)
+        return token.getPastVotes(account, timepoint);
+    }
+
+    /// @notice Get current voting power (for proposal threshold checks)
+    /// @param account Address to get voting power for
+    /// @return Current voting power
+    function _getCurrentVotes(address account) internal view returns (uint256) {
+        return token.getVotes(account);
     }
 
     // ═══════════════════════════════════════════════════════════════════════

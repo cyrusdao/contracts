@@ -3,18 +3,25 @@ require("dotenv").config();
 
 module.exports = {
   solidity: {
-    version: "0.8.27",
+    version: "0.8.31",
     settings: {
       optimizer: {
         enabled: true,
         runs: 200,
       },
       evmVersion: "cancun",
+      viaIR: true,
     },
+  },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts",
   },
   networks: {
     localhost: {
-      url: "http://127.0.0.1:8545",
+      url: "http://127.0.0.1:8546",
       chainId: 31337,
     },
     baseSepolia: {

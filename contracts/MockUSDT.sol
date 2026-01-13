@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.31;
 
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+// @luxfi/standard unified imports - DO NOT import @openzeppelin directly
+import {ERC20} from "@luxfi/standard/tokens/ERC20.sol";
 
 /// @title Mock USDT for local testing
 /// @notice Simple ERC20 with 6 decimals and public mint

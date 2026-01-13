@@ -1,23 +1,17 @@
 // SPDX-License-Identifier: MIT
-// Compatible with OpenZeppelin Contracts ^5.5.0
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.31;
 
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {ERC20Bridgeable} from "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Bridgeable.sol";
-import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import {ERC20Pausable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
-import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+// @luxfi/standard unified imports - DO NOT import @openzeppelin directly
+import {ERC20, ERC20Bridgeable, ERC20Burnable, ERC20Pausable, ERC20Permit, ERC20Votes, IERC20, SafeERC20} from "@luxfi/standard/tokens/ERC20.sol";
+import {Nonces, ReentrancyGuard} from "@luxfi/standard/utils/Utils.sol";
+import {Ownable} from "@luxfi/standard/access/Access.sol";
 
 /// @title Cyrus Token - The Father of Human Rights
 /// @notice Quadratic bonding curve token - USDT pricing from $0.01 to $1 (100X)
 /// @dev Early buyers get more tokens per dollar via quadratic curve
 /// @dev Transfers locked until Nowruz 2026 (March 21, 2026)
 /// @custom:security-contact security@cyrus.cash
-contract Cyrus is ERC20, ERC20Bridgeable, ERC20Burnable, ERC20Pausable, Ownable, ERC20Permit, ReentrancyGuard {
+contract Cyrus is ERC20, ERC20Bridgeable, ERC20Burnable, ERC20Pausable, ERC20Votes, Ownable, ERC20Permit, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     address internal constant SUPERCHAIN_TOKEN_BRIDGE = 0x4200000000000000000000000000000000000028;
@@ -319,7 +313,7 @@ contract Cyrus is ERC20, ERC20Bridgeable, ERC20Burnable, ERC20Pausable, Ownable,
 
     function _update(address from, address to, uint256 value)
         internal
-        override(ERC20, ERC20Pausable)
+        override(ERC20, ERC20Pausable, ERC20Votes)
     {
         // Before Nowruz 2026, only allow:
         // 1. Minting (from == address(0)) - for bonding curve buys
@@ -336,5 +330,10 @@ contract Cyrus is ERC20, ERC20Bridgeable, ERC20Burnable, ERC20Pausable, Ownable,
         }
 
         super._update(from, to, value);
+    }
+
+    /// @notice Override nonces for ERC20Permit/ERC20Votes conflict resolution
+    function nonces(address owner) public view virtual override(ERC20Permit, Nonces) returns (uint256) {
+        return super.nonces(owner);
     }
 }

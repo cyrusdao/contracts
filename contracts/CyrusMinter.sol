@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.27;
+pragma solidity ^0.8.31;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+// @luxfi/standard unified imports - DO NOT import @openzeppelin directly
+import {IERC20} from "@luxfi/standard/tokens/ERC20.sol";
+import {ReentrancyGuard} from "@luxfi/standard/utils/Utils.sol";
+import {Ownable} from "@luxfi/standard/access/Access.sol";
 
 /// @title CyrusMinter - Progressive Fee Free Mint
 /// @notice Allows users to mint CYRUS tokens with a progressive fee that goes to protocol-owned liquidity
