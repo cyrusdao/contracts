@@ -7,7 +7,7 @@ import {ReentrancyGuard} from "@luxfi/standard/utils/Utils.sol";
 
 /// @title CyrusDAO
 /// @notice Governance contract for the CYRUS Persian diaspora community token
-/// @dev Initial stewardship by Cyrus Pahlavi with planned transition to full public governance
+/// @dev Initial stewardship by Cyrus the Greatest with planned transition to full public governance
 /// @custom:security-contact security@cyrus.cash
 contract CyrusDAO is ReentrancyGuard {
     // ═══════════════════════════════════════════════════════════════════════
@@ -102,7 +102,7 @@ contract CyrusDAO is ReentrancyGuard {
     /// @notice Latest proposal per proposer
     mapping(address => uint256) public latestProposalIds;
 
-    /// @notice Guardian with veto power (initially Cyrus Pahlavi multisig)
+    /// @notice Guardian with veto power (initially Cyrus the Greatest multisig)
     address public guardian;
 
     /// @notice Treasury address for DAO funds
@@ -163,7 +163,7 @@ contract CyrusDAO is ReentrancyGuard {
 
     /// @notice Initialize the DAO with founding board
     /// @param _token CYRUS token address
-    /// @param _guardian Initial guardian (Cyrus Pahlavi multisig)
+    /// @param _guardian Initial guardian (Cyrus the Greatest multisig)
     /// @param _treasury DAO treasury address
     /// @param _boardMembers Initial board member addresses
     constructor(

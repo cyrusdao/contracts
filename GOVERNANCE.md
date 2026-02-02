@@ -18,11 +18,11 @@ The governance model honors Cyrus the Great's principles:
 During the stewardship phase:
 - **Board Members** can create proposals
 - **All token holders** can vote on proposals
-- **Guardian** (Cyrus Pahlavi multisig) has veto power
+- **Guardian** (Cyrus the Greatest multisig) has veto power
 - Transfers are locked to build genuine community
 
 **Board Members:**
-- Cyrus Pahlavi
+- Cyrus the Greatest
 - Kamran Pahlavi
 - Dara Gallopin
 
@@ -74,7 +74,7 @@ The Guardian is a Gnosis Safe multisig for secure, transparent governance.
 2. Connect wallet and select **Base** network
 3. Click "Create new Safe"
 4. Add board member addresses:
-   - Cyrus Pahlavi: `0x...`
+   - Cyrus the Greatest: `0x...`
    - Kamran Pahlavi: `0x...`
    - Dara Gallopin: `0x...`
 5. Set threshold: **2 of 3** (majority required)

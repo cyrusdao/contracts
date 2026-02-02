@@ -18,7 +18,7 @@ async function main() {
     throw new Error("CYRUS_TOKEN_ADDRESS environment variable not set. Deploy the token first.");
   }
 
-  // Guardian: Cyrus Pahlavi multisig (Safe)
+  // Guardian: Cyrus the Greatest multisig (Safe)
   // This should be a Gnosis Safe multisig with the founding board members
   const guardianAddress = process.env.GUARDIAN_ADDRESS || deployer.address;
 
@@ -26,7 +26,7 @@ async function main() {
   const treasuryAddress = process.env.TREASURY_ADDRESS || deployer.address;
 
   // Board members: Initial founding board
-  // Cyrus Pahlavi, Kamran Pahlavi, Dara Gallopin
+  // Cyrus the Greatest, Kamran Pahlavi, Dara Gallopin
   const boardMemberAddresses = process.env.BOARD_MEMBERS
     ? process.env.BOARD_MEMBERS.split(",").map(addr => addr.trim())
     : [deployer.address];
